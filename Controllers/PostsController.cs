@@ -87,7 +87,7 @@ namespace BlazBooruAPI.Controllers
 
         //GET api/posts/search/{tags}
         [HttpGet("search/{tags}")]
-        public async Task<BooruImageAPI[]> SearchTags(string tags) =>
-            Array.ConvertAll(await DataService.SearchTags(tags.Split("+")), i => (BooruImageAPI)i);
+        public Task<BooruImageAPI[]> SearchTags(string tags) =>
+            DataService.SearchTags(tags.Split("+"));
     }
 }

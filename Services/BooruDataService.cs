@@ -99,27 +99,38 @@ namespace BlazBooruAPI.Services
         {
             var cmd = Booru_Storage.CreateCommand("SELECT Image FROM Image_Data ORDER BY ID DESC LIMIT $count");
             cmd.Parameters.AddWithValue("$count", Count);
-            var result = await cmd.SQLCastAsync<int>();
+            var DataReader = await cmd.ExecuteReaderAsync();
+            var ImgIDs = new List<string>();
+            while(DataReader.Read())
+            {
+                ImgIDs.Add(DataReader.GetString(0));
+            }
 
-            var FetchTasks = result.Select(I => GetPostByID(I.ToString()));
+            var FetchTasks = ImgIDs.Select(I => GetPostByID(I));
             return (await Task.WhenAll(FetchTasks)).ToArray();
         }
 
         public async Task<BooruImageAPI[]> SearchTags(string[] tags, int count = 42)
         {
+            var cmd = Booru_Storage.CreateCommand();
             var sql = "SELECT Image FROM Tag_Refs WHERE ";
             for (int i = 0; i < tags.Length; i++)
             {
                 sql += $"Tag = $tag{i} AND ";
+                cmd.Parameters.AddWithValue($"$tag{i}", tags[i]);
             }
             sql = sql.Substring(0, sql.Length - 4) + " GROUP BY Image;";
-            var Images = Booru_Storage.CreateCommand(sql).SQLCast<int>();
-            if(Images.Count() == 0)
-                return null;
+            cmd.CommandText = sql;
 
-            var FetchTasks = Images.Select(I => GetPostByID(I.ToString()));
-            var Results = await Task.WhenAll(FetchTasks);
-            return Results;
+            var DataReader = await cmd.ExecuteReaderAsync();
+            var ImgIDs = new List<int>();
+            while(DataReader.Read())
+            {
+                ImgIDs.Add(DataReader.GetInt32(0));
+            }
+
+            var FetchTasks = ImgIDs.Select(I => GetPostByID(I.ToString()));
+            return (await Task.WhenAll(FetchTasks)).ToArray();
         }
 
         public async Task<bool> RemoveImage(string PostID)
