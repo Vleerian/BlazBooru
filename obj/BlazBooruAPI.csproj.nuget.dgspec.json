@@ -1,0 +1,151 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\Programming\\BooruProject\\BlazBooru\\BlazBooruAPI\\BlazBooruAPI.csproj": {}
+  },
+  "projects": {
+    "D:\\Programming\\BooruProject\\BlazBooru\\BlazBooruAPI\\BlazBooruAPI.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Programming\\BooruProject\\BlazBooru\\BlazBooruAPI\\BlazBooruAPI.csproj",
+        "projectName": "BlazBooruAPI",
+        "projectPath": "D:\\Programming\\BooruProject\\BlazBooru\\BlazBooruAPI\\BlazBooruAPI.csproj",
+        "packagesPath": "C:\\Users\\Ataga\\.nuget\\packages\\",
+        "outputPath": "D:\\Programming\\BooruProject\\BlazBooru\\BlazBooruAPI\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Ataga\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.emzi0767.com/api/v3/index.json": {},
+          "https://packages.stride3d.net/nuget": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "D:\\Programming\\BooruProject\\BlazBooru\\BlazBooruCommon\\BlazBooruCommon.csproj": {
+                "projectPath": "D:\\Programming\\BooruProject\\BlazBooru\\BlazBooruCommon\\BlazBooruCommon.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "LiteDB": {
+              "target": "Package",
+              "version": "[5.0.10, )"
+            },
+            "LiteDB.Async": {
+              "target": "Package",
+              "version": "[0.0.8, )"
+            },
+            "System.Data.SQLite": {
+              "target": "Package",
+              "version": "[1.0.113.7, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[5.0.3, 5.0.3]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100-preview.2.21155.3\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Programming\\BooruProject\\BlazBooru\\BlazBooruCommon\\BlazBooruCommon.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Programming\\BooruProject\\BlazBooru\\BlazBooruCommon\\BlazBooruCommon.csproj",
+        "projectName": "BlazBooruCommon",
+        "projectPath": "D:\\Programming\\BooruProject\\BlazBooru\\BlazBooruCommon\\BlazBooruCommon.csproj",
+        "packagesPath": "C:\\Users\\Ataga\\.nuget\\packages\\",
+        "outputPath": "D:\\Programming\\BooruProject\\BlazBooru\\BlazBooruCommon\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Ataga\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.emzi0767.com/api/v3/index.json": {},
+          "https://packages.stride3d.net/nuget": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "LiteDB": {
+              "target": "Package",
+              "version": "[5.0.10, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100-preview.2.21155.3\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
