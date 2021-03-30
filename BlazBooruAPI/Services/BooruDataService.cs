@@ -95,6 +95,22 @@ namespace BlazBooruAPI.Services
             return result;
         }
 
+        public async Task<BooruImageAPI> GetPostByMD5(string MD5)
+        {
+            var cmd = Booru_Storage.CreateCommand("SELECT * FROM Image_Data WHERE MD5 = $md5");
+            cmd.Parameters.AddWithValue("$md5", MD5);
+            var tmp = (await cmd.SQLCastAsync<BooruImageData>()).FirstOrDefault();
+            if(tmp == null)
+                return null;
+                
+            var result = (BooruImageAPI)tmp;
+            cmd = Booru_Storage.CreateCommand("SELECT * FROM Tags_View WHERE Image = $id");
+            cmd.Parameters.AddWithValue("$id", tmp.ID);
+            var Tags = await cmd.SQLCastAsync<BooruTagData>();
+            result.Tags = Tags.ToArray();
+            return result;
+        }
+
         public async Task<BooruImageAPI[]> GetRecent(int Count = 42)
         {
             var cmd = Booru_Storage.CreateCommand("SELECT Image FROM Image_Data ORDER BY ID DESC LIMIT $count");
