@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Components.Forms;
 
-using LiteDB;
+using System.Data.SQLite;
 
 using BlazBooruCommon.Data;
 using BlazBooruAPI.Services;
@@ -54,15 +54,25 @@ namespace BlazBooruAPI.Controllers
             var tmp = ((string)Request.Form["tags"]).Split("+");
             var Tags = tmp.Select(t => new BooruTagData() { Type = "general", Tag = t, Refs = 1 });
 
-            var PostID = await DataService.AddPost(new BooruImageAPI
+            try {
+                var PostID = await DataService.AddPost(new BooruImageAPI
+                {
+                    Image = FileData.ID.ToString(),
+                    MD5 = ImageMD5,
+                    Original_Name = file.FileName,
+                    Tags = Tags.ToArray()
+                });
+                return PostID.ToString();
+            }
+            catch ( System.Data.SQLite.SQLiteException e)
             {
-                Image = FileData.ID.ToString(),
-                MD5 = ImageMD5,
-                Original_Name = file.FileName,
-                Tags = Tags.ToArray()
-            });
-
-            return PostID.ToString();
+                if(e.ErrorCode == 19)
+                {
+                    var imageData = await DataService.GetPostByMD5(ImageMD5);
+                    return $"IMAGE_EXISTS {imageData.ID}";
+                }
+                return "UNKNOWN_ERROR";
+            }
         }
 
         //GET /api/posts/
