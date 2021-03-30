@@ -1,0 +1,59 @@
+﻿@using BlazBooru.Services
+@using BlazBooruCommon.Data
+@using System.Security.Claims
+@inject BooruAPIService APIService
+@inject NavigationManager Navigation
+
+
+<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">BlazBooru</a>
+</div>
+
+<div class="sidebar">
+    <ul class="nav flex-column">
+        <li class="nav-item px-3">
+            <EditForm Model="@submission" OnValidSubmit="@HandleSearch">
+                <input type="text" class="form-control" id="tagsSearch" @bind-value="submission.TagsSearch">
+            </EditForm>
+        </li>
+        @if (APIService.Tags != null)
+        {
+            <li class ="tags">
+                @foreach (var group in APIService.Tags)
+                {
+                    <span class="@group.Key-heading tag-heading">@group.Key</span>
+                    <ul class="@group.Key-tags taglist">
+                        @foreach (var tag in group)
+                        {
+                            <a href="/search/@tag.Tag"><li>@tag.Tag</li></a>
+                        }
+                    </ul>
+                }
+            </li>
+        }
+    </ul>
+</div>
+
+@code {
+    private FormSubmission submission;
+
+    protected override void OnInitialized()
+    {
+        submission = new ();
+        APIService.TagsUpdated += HasUpdated;
+
+        base.OnInitialized();
+    }
+
+    private void HasUpdated()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void HandleSearch()
+    {
+        string[] tags = submission.TagsSearch.Split(" ");
+        var URI = "/search/" + string.Join('+', tags);
+        Navigation.NavigateTo(URI);
+    }
+}

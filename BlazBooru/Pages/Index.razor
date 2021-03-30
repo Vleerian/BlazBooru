@@ -1,0 +1,33 @@
+@page "/"
+
+@using BlazBooru.Services
+@inject BooruAPIService APIService
+
+<Display_Multiple files="recent_posts"/>
+
+@code {
+    public Tuple<string, string>[] recent_posts { get; set; }
+    private bool shouldRender = true;
+
+    protected override void OnInitialized()
+    {
+        recent_posts = new Tuple<string, string>[]{
+        };
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        shouldRender = false;
+        var imgs = await APIService.GetRecentAsync();
+        recent_posts = imgs.Select(I => new Tuple<string, string> (I.ID.ToString(), $"http://localhost:5000/api/file/{I.Image}"))
+            .Where(I => I.Item2 != "")
+            .ToArray();
+        APIService.ClearTags();
+        shouldRender = true;
+    }
+
+    protected override bool ShouldRender()
+    {
+        return shouldRender;
+    }
+}

@@ -1,0 +1,17 @@
+<div class="container">
+    <div class="row">
+        @foreach (var image in files)
+        {
+            <span class="col-xs-2 booruImage">
+                <a href="/post/@image.Item1">
+                    <img src="@image.Item2" width="150px">
+                </a>
+            </span>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Tuple<string, string>[] files { get; set; }
+}

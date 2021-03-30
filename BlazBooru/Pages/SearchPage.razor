@@ -1,0 +1,36 @@
+@page "/search/{tagPart}"
+
+@using BlazBooru.Services
+@inject BooruAPIService APIService
+
+<Display_Multiple files="search_result" />
+
+@code {
+    [Parameter]
+    public string TagPart { get; set; }
+    public Tuple<string, string>[] search_result { get; set; }
+    private bool shouldRender = true;
+
+    protected override void OnInitialized()
+    {
+        search_result = new Tuple<string, string>[]{
+        };
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        shouldRender = false;
+        var Tags = TagPart.Split("+");
+        var imgs = await APIService.SearchTagsAsync(Tags);
+        search_result = imgs.Select(I => new Tuple<string, string> (I.ID.ToString(), $"http://localhost:5000/api/file/{I.Image}"))
+            .Where(I => I.Item2 != "")
+            .ToArray();
+        APIService.ClearTags();
+        shouldRender = true;
+    }
+
+    protected override bool ShouldRender()
+    {
+        return shouldRender;
+    }
+}
