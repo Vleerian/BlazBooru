@@ -2,10 +2,16 @@
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #ccc;
+}
+
+.bg-warning {
+    padding-left: 5px;
+    color: black;
 }
 
 a, .btn-link {
-    color: #0366d6;
+    color: #ff0066;
 }
 
 .btn-primary {

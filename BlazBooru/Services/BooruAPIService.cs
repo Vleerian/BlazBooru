@@ -16,9 +16,9 @@ namespace BlazBooru.Services
         public IGrouping<string, BooruTagData>[] Tags;
         public string BaseAddress;
 
-        public BooruAPIService()
+        public BooruAPIService(HttpClient client)
         {
-            Client = new HttpClient();
+            Client = client;
             BaseAddress = "http://localhost:5000/";
         }
         

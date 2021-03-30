@@ -1,0 +1,81 @@
+@page "/upload"
+
+@inject HttpClient Http
+
+<h1>Create Post</h1>
+
+<p class="bg-warning">@errorMessage</p>
+<EditForm EditContext="@editContext" OnValidSubmit="HandleSubmit">
+    <p><InputFile OnChange="@OnFileChange" /></p>
+    <p>Tags: <InputText @bind-Value="data.Tags"/></p>
+
+    <button type="submit">Submit</button>
+</EditForm>
+
+@code {
+    private EditContext editContext;
+    private FormData data;
+    public string errorMessage;
+
+    protected override void OnInitialized()
+    {
+        errorMessage = "";
+        data = new();
+        editContext = new (data);
+    }
+
+    async Task OnFileChange(InputFileChangeEventArgs  e)
+    {
+        if(!e.File.ContentType.StartsWith("image"))
+        {
+            errorMessage = "File must be an image.";
+            return;
+        }
+
+        data.FileName = e.File.Name;
+        using (var FileStream = e.File.OpenReadStream())
+        {
+            data.FileData = new byte[FileStream.Length];
+            await FileStream.ReadAsync(data.FileData, 0, (int)FileStream.Length);
+        }
+    }
+
+    private async Task HandleSubmit()
+    {
+        if(data.FileData != null)
+        {
+            var content = new MultipartFormDataContent();
+            content.Add(
+                content: new ByteArrayContent(data.FileData),
+                name: "\"files\"",
+                fileName: data.FileName
+            );
+
+            var tags = data.Tags.Contains(" ") ?
+                data.Tags.Split(" ", options:StringSplitOptions.RemoveEmptyEntries) :
+                new string[] { data.Tags.Trim() != "" ? data.Tags : "tagme"  };
+            
+            content.Add(new StringContent(string.Join('+', tags)), "tags");
+
+            var response = await Http.PostAsync("http://localhost:5000/api/posts", content);
+            
+            var r = await response.Content.ReadAsStringAsync();
+
+            if(r.StartsWith("IMAGE_EXISTS"))
+            {
+                var postID = r.Split(" ")[1];
+                errorMessage = $"Identical Image Found with Image ID {postID}";
+            }
+            else
+            {
+                errorMessage = "An unknown error was encountered.";
+            }
+        }
+    }
+
+    private class FormData {
+        public string Tags { get; set; }
+        public string FileName { get; set; }
+        public byte[] FileData { get;set; }
+    }
+}
