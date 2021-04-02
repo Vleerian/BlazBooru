@@ -1,6 +1,7 @@
 @page "/upload"
 
 @inject HttpClient Http
+@inject NavigationManager Navigation
 
 <h1>Create Post</h1>
 
@@ -66,9 +67,13 @@
                 var postID = r.Split(" ")[1];
                 errorMessage = $"Identical Image Found with Image ID {postID}";
             }
-            else
+            else if(r.StartsWith("UNKNOWN_ERROR"))
             {
                 errorMessage = "An unknown error was encountered.";
+            }
+            else
+            {
+                Navigation.NavigateTo($"/post/{r}");
             }
         }
     }
